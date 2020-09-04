@@ -72,6 +72,30 @@
             </div>
         </nav>
 
+        @if (\Session::has('success'))
+            <div class="container alert alert-success">
+                <ul>
+                    <li>{!! \Session::get('success') !!}</li>
+                </ul>
+            </div>
+        @endif
+        @if (\Session::has('error'))
+            <div class="container alert alert-danger">
+                <ul>
+                    <li>{!! \Session::get('error') !!}</li>
+                </ul>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="container alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <main class="py-4">
             @yield('content')
         </main>

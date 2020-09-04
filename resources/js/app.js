@@ -5,6 +5,9 @@
  */
 
 require('./bootstrap');
+require('jquery');
+require('jquery-mask-plugin');
+require('datatables.net')
 
 window.Vue = require('vue');
 
@@ -29,4 +32,18 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+});
+
+$(document).ready(function(){
+    $('.phone-mask').mask('(99)99999-9999');
+
+    $('.my_datatable').DataTable();
+
+    // show alert when delete
+    $('.delete').click(function(e) {
+        const res = confirm('Deseja mesmo excluir esse registro');
+        if (res === false) {
+            e.preventDefault();
+        }
+    })
 });
