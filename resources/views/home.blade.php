@@ -9,16 +9,16 @@
 
                 <div class="card-body">
                     <a href="{{ route('users.index') }}">
-                        <div class="h4">Agendamentos</div>
+                        <h4 class="text-dark">Agendamentos</h4>
                     </a>
                     <a href="{{ route('users.index') }}">
-                        <div class="h4">Doutores</div>
+                        <h4 class="text-dark">Doutores</h4>
+                    </a>
+                    <a href="{{ route('patients.index') }}">
+                        <h4 class="text-dark">Pacientes</h4>
                     </a>
                     <a href="{{ route('users.index') }}">
-                        <div class="h4">Pacientes</div>
-                    </a>
-                    <a href="{{ route('users.index') }}">
-                        <div class="h4">Usuários</div>
+                        <h4 class="text-dark">Usuários</h4>
                     </a>
                 </div>
             </div>

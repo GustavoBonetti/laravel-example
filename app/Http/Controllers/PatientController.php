@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Patient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +14,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $patients = Patient::all();
         $returns = [
-            'users' => $users
+            'patients' => $patients
         ];
 
-        return view('users.index', $returns);
+        return view('patients.index', $returns);
     }
 
     /**
@@ -30,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.form');
+        return view('patients.form');
     }
 
     /**
@@ -44,28 +43,28 @@ class UserController extends Controller
         $validateMessages = [
             'name.required' => 'Nome é obrigatório',
             'name.max' => 'Nome pode ter no máximo 255 caracteres',
+            'phone.required' => 'Telefone é obrigatório',
+            'phone.min' => 'Telefone deve ter no mínimo 10 dígitos, verifique se colocou o DDD',
             'email.max' => 'Email pode ter no máximo 255 caracteres',
             'email.unique' => 'Esse email já está sendo utilizado',
-            'password.required' => 'Senha é obrigatório',
-            'password.confirmed' => 'As senhas não conferem',
         ];
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'max:255|unique:users',
-            'password' => 'required|confirmed',
+            'email' => 'unique:patients|max:255',
+            'phone' => 'required|min:13',
         ], $validateMessages);
 
         $data = $request->all();
-        $user = User::create([
+        $patient = Patient::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'phone' => $data['phone']
         ]);
 
-        if (isset($user) && $user) {
-            return redirect()->route('users.index')->with('success', 'Usuário cadastrado com sucesso!');
+        if (isset($patient) && $patient) {
+            return redirect()->route('patients.index')->with('success', 'Paciente cadastrado com sucesso!');
         } else {
-            return redirect()->back()->with('error', 'Não foi possível cadastrar novo usuário');
+            return redirect()->back()->with('error', 'Não foi possível cadastrar novo paciente');
         }
     }
 
@@ -77,80 +76,66 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $patient = Patient::find($id);
 
         $returns = [
             'disabled' => true,
-            'user' => $user
+            'patient' => $patient
         ];
 
-        return view('users.form', $returns);
+        return view('patients.form', $returns);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $patient = Patient::find($id);
 
         $returns = [
-            'user' => $user
+            'patient' => $patient
         ];
 
-        return view('users.form', $returns);
+        return view('patients.form', $returns);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $data = $request->all();
-        $user = User::find($id);
+        $patient = Patient::find($id);
 
         $validateMessages = [
             'name.required' => 'Nome é obrigatório',
             'name.max' => 'Nome pode ter no máximo 255 caracteres',
+            'phone.required' => 'Telefone é obrigatório',
+            'phone.min' => 'Telefone deve ter no mínimo 10 dígitos, verifique se colocou o DDD',
             'email.max' => 'Email pode ter no máximo 255 caracteres',
             'email.unique' => 'Esse email já está sendo utilizado',
-            'password.required' => 'Senha é obrigatório',
-            'password.confirmed' => 'As senhas não conferem',
         ];
-
-        $rules = [
+        $request->validate([
             'name' => 'required|max:255',
-            'email' => 'max:255|unique:users,email,'.$user->id,
-        ];
+            'email' => 'max:255|unique:patients,email,'.$patient->id,
+            'phone' => 'required|min:13',
+        ], $validateMessages);
 
-        if (isset($data['password_old']) && $data['password_old']) {
-            if (!Hash::check($data['password_old'], $user->password)) {
-                session()->flash('error','Senha antiga não confere com a salva no sistema');
-                return redirect()->back();
-            }
-            $rules['password'] = 'required|confirmed';
-        }
+        $data = $request->all();
+        $patient->fill($data)->save();
 
-        $request->validate($rules, $validateMessages);
-
-        $user->fill([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password'])
-        ])->save();
-
-        if (isset($user) && $user) {
-            session()->flash('success', 'Usuário atualizado com sucesso!');
-            return redirect()->route('users.show', $id);
+        if (isset($patient) && $patient) {
+            return redirect()->route('patients.index')->with('success', 'Paciente cadastrado com sucesso!');
         } else {
-            return redirect()->back()->with('error', 'Não foi possível atualizar usuário');
+            return redirect()->back()->with('error', 'Não foi possível cadastrar novo paciente');
         }
     }
 
@@ -162,10 +147,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        $patient = patient::find($id);
+        $patient->delete();
 
-        if (isset($user) && $user) {
+        if (isset($patient) && $patient) {
             return redirect()->back()->with('success', 'Excluído com sucesso!');
         }
         return redirect()->back()->with('error', 'Não foi possível excluir');

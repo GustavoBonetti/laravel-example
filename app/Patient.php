@@ -8,5 +8,5 @@ class Patient extends Model
 {
     protected $table = 'patients';
 
-    protected $fillable = ['*'];
+    protected $fillable = ['name', 'phone', 'email'];
 }
