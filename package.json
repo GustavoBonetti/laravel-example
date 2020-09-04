@@ -16,6 +16,7 @@
         "datatables.net": "^1.10.21",
         "datatables.net-dt": "^1.10.21",
         "jquery": "^3.5.1",
+        "jquery-mask-plugin": "^1.14.16",
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
@@ -25,7 +26,5 @@
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10"
     },
-    "dependencies": {
-        "jquery-mask-plugin": "^1.14.16"
-    }
+    "dependencies": {}
 }
