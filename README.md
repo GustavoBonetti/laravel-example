@@ -5,6 +5,26 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## Instruções
+
+- docker-compose up -d –build
+- docker exec -it app bash
+- composer install
+- cp .env.example .env
+- php artisan key:generate
+- php artisan migrate
+- php artisan db:seed
+- npm install
+- npm run dev
+
+http://localhost:8080/
+
+http://localhost:8080/api/doctors
+
+usuário padrão
+admin@gmail.com
+senha: password
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
