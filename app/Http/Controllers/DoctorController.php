@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Patient;
+use App\Doctor;
 use Illuminate\Http\Request;
 
-class PatientController extends Controller
+class DoctorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +14,12 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patients = Patient::all();
+        $doctors = Doctor::all();
         $returns = [
-            'patients' => $patients
+            'doctors' => $doctors
         ];
 
-        return view('patients.index', $returns);
+        return view('doctors.index', $returns);
     }
 
     /**
@@ -29,7 +29,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        return view('patients.form');
+        return view('doctors.form');
     }
 
     /**
@@ -50,21 +50,21 @@ class PatientController extends Controller
         ];
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'unique:patients|max:255',
+            'email' => 'unique:doctors|max:255',
             'phone' => 'required|min:13',
         ], $validateMessages);
 
         $data = $request->all();
-        $patient = Patient::create([
+        $doctor = Doctor::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone']
         ]);
 
-        if (isset($patient) && $patient) {
-            return redirect()->route('patients.index')->with('success', 'Paciente cadastrado com sucesso!');
+        if (isset($doctor) && $doctor) {
+            return redirect()->route('doctors.index')->with('success', 'Médico cadastrado com sucesso!');
         } else {
-            return redirect()->back()->with('error', 'Não foi possível cadastrar novo paciente');
+            return redirect()->back()->with('error', 'Não foi possível cadastrar novo médico');
         }
     }
 
@@ -76,14 +76,14 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::find($id);
+        $doctor = Doctor::find($id);
 
         $returns = [
             'disabled' => true,
-            'patient' => $patient
+            'doctor' => $doctor
         ];
 
-        return view('patients.form', $returns);
+        return view('doctors.form', $returns);
     }
 
     /**
@@ -94,26 +94,26 @@ class PatientController extends Controller
      */
     public function edit($id)
     {
-        $patient = Patient::find($id);
+        $doctor = Doctor::find($id);
 
         $returns = [
-            'patient' => $patient
+            'doctor' => $doctor
         ];
 
-        return view('patients.form', $returns);
+        return view('doctors.form', $returns);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
-        $patient = Patient::find($id);
+        $doctor = Doctor::find($id);
 
         $validateMessages = [
             'name.required' => 'Nome é obrigatório',
@@ -125,16 +125,16 @@ class PatientController extends Controller
         ];
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'max:255|unique:patients,email,'.$patient->id,
+            'email' => 'max:255|unique:doctors,email,'.$doctor->id,
             'phone' => 'required|min:13',
         ], $validateMessages);
 
-        $patient->fill($data)->save();
+        $doctor->fill($data)->save();
 
-        if (isset($patient) && $patient) {
-            return redirect()->route('patients.index')->with('success', 'Paciente cadastrado com sucesso!');
+        if (isset($doctor) && $doctor) {
+            return redirect()->route('doctors.index')->with('success', 'Médico cadastrado com sucesso!');
         } else {
-            return redirect()->back()->with('error', 'Não foi possível cadastrar novo paciente');
+            return redirect()->back()->with('error', 'Não foi possível cadastrar novo médico');
         }
     }
 
@@ -146,10 +146,10 @@ class PatientController extends Controller
      */
     public function destroy($id)
     {
-        $patient = Patient::find($id);
-        $patient->delete();
+        $doctor = Doctor::find($id);
+        $doctor->delete();
 
-        if (isset($patient) && $patient) {
+        if (isset($doctor) && $doctor) {
             return redirect()->back()->with('success', 'Excluído com sucesso!');
         }
         return redirect()->back()->with('error', 'Não foi possível excluir');

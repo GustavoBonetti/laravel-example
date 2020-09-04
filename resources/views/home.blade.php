@@ -8,10 +8,10 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
-                    <a href="{{ route('users.index') }}">
+                    <a href="{{ route('schedules.index') }}">
                         <h4 class="text-dark">Agendamentos</h4>
                     </a>
-                    <a href="{{ route('users.index') }}">
+                    <a href="{{ route('doctors.index') }}">
                         <h4 class="text-dark">Doutores</h4>
                     </a>
                     <a href="{{ route('patients.index') }}">
