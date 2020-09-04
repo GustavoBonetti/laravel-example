@@ -7,7 +7,7 @@
 
 ## Instruções
 
-- docker-compose up -d –build
+- docker-compose up -d -–build
 - docker exec -it app bash
 - composer install
 - cp .env.example .env
